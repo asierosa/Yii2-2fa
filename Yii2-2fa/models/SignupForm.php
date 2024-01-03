@@ -3,7 +3,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
-use app\models\User;
+use app\models\Usuarios;
 
 /**
  * Modelo para el formulario de registro.
@@ -22,9 +22,9 @@ class SignupForm extends Model
         return [
             // Todos los campos son requeridos
             [['username', 'email', 'password'], 'required'],
-            ['username', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Este nombre de usuario ya ha sido tomado.'],
+            ['username', 'unique', 'targetClass' => '\app\models\Usuarios', 'message' => 'Este nombre de usuario ya ha sido tomado.'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Esta dirección de correo electrónico ya ha sido tomada.'],
+            ['email', 'unique', 'targetClass' => '\app\models\Usuarios', 'message' => 'Esta dirección de correo electrónico ya ha sido tomada.'],
             ['password', 'string', 'min' => 6],
         ];
     }
@@ -39,8 +39,9 @@ class SignupForm extends Model
             return null;
         }
 
-        $user = new User();
+        $user = new Usuarios();
         $user->username = $this->username;
+        $user->nombre = $this->username;
         $user->email = $this->email;
         $user->setPassword($this->password);
         $user->generateAuthKey();
