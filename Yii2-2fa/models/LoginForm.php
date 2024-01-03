@@ -1,15 +1,11 @@
 <?php
-
 namespace app\models;
 
 use Yii;
 use yii\base\Model;
 
 /**
- * LoginForm is the model behind the login form.
- *
- * @property-read User|null $user
- *
+ * LoginForm es el modelo detrás del formulario de inicio de sesión.
  */
 class LoginForm extends Model
 {
@@ -19,28 +15,24 @@ class LoginForm extends Model
 
     private $_user = false;
 
-
     /**
-     * @return array the validation rules.
+     * Reglas de validación.
      */
     public function rules()
     {
         return [
-            // username and password are both required
+            // username y password son requeridos
             [['username', 'password'], 'required'],
-            // rememberMe must be a boolean value
+            // rememberMe debe ser un valor booleano
             ['rememberMe', 'boolean'],
-            // password is validated by validatePassword()
+            // password es validado por validatePassword()
             ['password', 'validatePassword'],
         ];
     }
 
     /**
-     * Validates the password.
-     * This method serves as the inline validation for password.
-     *
-     * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
+     * Valida la contraseña.
+     * Este método sirve como la validación en línea para la contraseña.
      */
     public function validatePassword($attribute, $params)
     {
@@ -48,29 +40,29 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, 'Nombre de usuario o contraseña incorrecta.');
             }
         }
     }
 
     /**
-     * Logs in a user using the provided username and password.
-     * @return bool whether the user is logged in successfully
+     * Inicia sesión a un usuario usando el nombre de usuario y contraseña proporcionados.
+     * @return bool si el inicio de sesión fue exitoso
      */
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
+        
         return false;
     }
 
     /**
-     * Finds user by [[username]]
-     *
+     * Encuentra un usuario por su nombre de usuario
      * @return User|null
      */
-    public function getUser()
+    protected function getUser()
     {
         if ($this->_user === false) {
             $this->_user = User::findByUsername($this->username);
